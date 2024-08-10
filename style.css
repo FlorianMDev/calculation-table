@@ -1,0 +1,27 @@
+thead {
+    font-weight: 700;
+}
+
+body {
+	text-align: center;
+}
+
+th {
+	border: black solid 1px;
+	margin: 0;
+	padding: 0;
+}
+
+thead {
+	border-bottom: black solid 3px;
+}
+
+td {
+	border: black solid 1px;
+}
+
+th, td, tr {
+	width: 2rem;
+}
+
+
