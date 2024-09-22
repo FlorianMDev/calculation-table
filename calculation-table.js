@@ -15,35 +15,41 @@ for (i = 1; i <= limit; i++) {
 console.table(xTable);
 
 let jsTable = document.querySelector('#js-table');
-jsTable.innerHTML = `<thead></thead><tbody></tbody>`;
-let thead = document.querySelector('#js-table thead');
-let tbody = document.querySelector('#js-table tbody');
 
-function insertHead(html) {
-	html.innerHTML = '';
-	let th = `<tr><th scope="col">Nbr</th>`;
+function createCell (type, tr, content) {
+	let cell = document.createElement(type);
+	cell.innerHTML = content;
+	tr.appendChild(cell);
+	return cell;
+}
+
+function insertHead(htmlElement) {
+	let tr = document.createElement('tr');
+	createCell('th', tr, "").setAttribute("scope", "col");
 	for (let i = 1; i <= limit; i++) {
-		th += `<th scope="col">${i}</th>`;
+		createCell('th', tr, i).setAttribute("scope", "col");
 	}
-	html.innerHTML += th;
-	html.innerHTML += '</tr>';
+	htmlElement.appendChild(tr);
 }
 
-
-function insertLine(i, operation, th, html, start, limit) {
-	for (let j = start; j <= limit; j++) {		
-		th += `<td>${operation(i, j)}</td>`;
+function insertLine(i, operation, tr, start, limit) {
+	for (let j = start; j <= limit; j++) {
+		createCell('td', tr, operation(i, j) );
 	}
-	html.innerHTML += th;
 }
-function insertBody(operation, html, start, limit) {
-	html.innerHTML = '';
+
+function insertBody(operation, htmlElement, start, limit) {
 	for (let i = start; i <= limit; i++) {
-		let th = `<tr><th scope ="row">${i}</th>`;
-		insertLine(i, operation, th, html, start, limit);
-		html.innerHTML += '</tr>';
+		let tr = document.createElement('tr');
+		createCell('th', tr, i).setAttribute("scope", "row");;
+		insertLine(i, operation, tr, start, limit);
+		htmlElement.appendChild(tr);
 	}
 }
 
-insertHead(thead);
-insertBody((a,b) => Math.round(/*change operation here :*/ (a**2) * (b**2) ), tbody, start, limit);
+function operation(a,b) {
+	return Math.round(a * b);
+}
+
+insertHead(jsTable);
+insertBody(operation, jsTable, start, limit);
